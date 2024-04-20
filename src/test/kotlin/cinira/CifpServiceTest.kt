@@ -22,7 +22,7 @@ import java.nio.file.StandardOpenOption
 import kotlin.io.path.createTempFile
 
 @SpringBootTest(
-    classes = [DbContext::class, CifpServiceTest.Context::class],
+    classes = [CifpServiceTest.Context::class],
     webEnvironment = SpringBootTest.WebEnvironment.NONE
 )
 class CifpServiceTest {

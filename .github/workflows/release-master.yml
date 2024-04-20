@@ -1,0 +1,53 @@
+name: Release master on semantic version change
+on:
+  push:
+    branches:
+      - master
+jobs:
+  release_master:
+    name: Release master
+    permissions:
+      checks: write
+      contents: write
+    runs-on:
+      - ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-java@v3
+        with:
+          java-version: "21"
+          distribution: temurin
+          cache: gradle
+      - uses: gradle/actions/setup-gradle@v3
+
+      - run: ./gradlew test
+
+      - uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          comment_mode: off
+          files: ./build/test-results/test/*.xml
+
+      - uses: mathieudutour/github-tag-action@v6.2
+        id: semantic_version
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tag_prefix: v_
+
+      - run: ./gradlew -x test -Pversion=${{ steps.semantic_version.outputs.new_version }} build
+        if: ${{ steps.semantic_version.outputs.new_version }}
+
+      - uses: softprops/action-gh-release@v1
+        if: ${{ steps.semantic_version.outputs.new_version }}
+        with:
+          generate_release_notes: ${{ !startsWith(steps.semantic_version.outputs.release_type, 'pre') }}
+          name: v${{ steps.semantic_version.outputs.new_version }}
+          prerelease: ${{ startsWith(steps.semantic_version.outputs.release_type, 'pre') }}
+          tag_name: ${{ steps.semantic_version.outputs.new_version }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          files: |
+            ./build/libs/demo-api-${{ steps.semantic_version.outputs.new_version }}.war

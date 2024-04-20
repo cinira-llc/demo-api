@@ -1,6 +1,17 @@
+---
 spring:
   jpa:
+    open-in-view: false
     properties:
       hibernate:
         dialect: org.hibernate.community.dialect.SQLiteDialect
         physical_naming_strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  main:
+    web-application-type: servlet
+---
+spring:
+  config:
+    activate:
+      on-profile: ebs
+server:
+  port: 5000

@@ -1,6 +1,8 @@
 plugins {
+    id("org.springframework.boot") version "3.2.5"
     kotlin("plugin.noarg") version "1.9.23"
     kotlin("jvm") version "1.9.23"
+    war
 }
 
 java {
@@ -13,7 +15,7 @@ java {
 
 dependencies {
     //<editor-fold desc="Platform dependencies">
-    implementation(platform("org.springframework.boot:spring-boot-dependencies:3.2.4"))
+    implementation(platform("org.springframework.boot:spring-boot-dependencies:3.2.5"))
     //</editor-fold>
 
     //<editor-fold desc="Implementation dependencies">
@@ -23,12 +25,15 @@ dependencies {
     implementation("org.slf4j:slf4j-api")
     implementation("org.springframework:spring-context")
     implementation("org.springframework:spring-jdbc")
+    implementation("org.springframework:spring-web")
+    implementation("org.springframework:spring-webmvc")
     implementation("org.springframework.boot:spring-boot-autoconfigure")
     //</editor-fold>
 
     //<editor-fold desc="Runtime-only dependencies">
     runtimeOnly("org.hibernate.orm:hibernate-community-dialects:6.4.1.Final")
     runtimeOnly("org.springframework.boot:spring-boot-starter-data-jpa")
+    runtimeOnly("org.springframework.boot:spring-boot-starter-web")
     runtimeOnly("org.xerial:sqlite-jdbc")
     //</editor-fold>
 
