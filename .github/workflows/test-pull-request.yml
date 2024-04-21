@@ -21,10 +21,10 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v3
 
-      - run: ./gradlew test
+      - run: ./gradlew -Pcinira_artifacts_repo_password=$PACKAGES_ACCESS_TOKEN test
 
       - uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
         with:
           comment_mode: off
-          files: ./build/test-results/test/*.xml
+          files: ./build/test-results/**/*.xml

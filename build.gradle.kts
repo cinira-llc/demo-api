@@ -5,6 +5,10 @@ plugins {
     war
 }
 
+apply(from = "./repository.gradle.kts")
+
+group = "cinira"
+
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(21))
@@ -19,9 +23,11 @@ dependencies {
     //</editor-fold>
 
     //<editor-fold desc="Implementation dependencies">
+    implementation("cinira:demo-model:1.0.13")
     implementation("com.zaxxer:HikariCP")
     implementation("jakarta.persistence:jakarta.persistence-api")
     implementation("org.apache.commons:commons-compress:1.26.1")
+    implementation("org.apache.commons:commons-lang3:3.14.0")
     implementation("org.slf4j:slf4j-api")
     implementation("org.springframework:spring-context")
     implementation("org.springframework:spring-jdbc")
@@ -55,6 +61,8 @@ dependencies {
 repositories {
     mavenCentral()
     mavenLocal()
+    val ciniraArtifacts: Action<RepositoryHandler> by rootProject.extra
+    ciniraArtifacts(this)
 }
 
 //kotlin {
